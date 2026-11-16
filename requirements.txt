@@ -1,0 +1,8 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+numpy>=1.26.0
+pandas>=2.0.0
+scipy>=1.11.0
+neurokit2>=0.2.7
+ollama
+cryptography>=44.0.0

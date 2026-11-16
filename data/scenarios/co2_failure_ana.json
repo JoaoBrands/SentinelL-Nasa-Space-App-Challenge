@@ -1,0 +1,27 @@
+{
+  "id": "co2_failure_ana",
+  "name": "CO2 Failure - Ana",
+  "duration_minutes": 100,
+  "speed": 1.0,
+  "phases": [
+    { "t0": 0,  "t1": 20, "module2_co2": [2.0, 2.4], "module2_ventilation": 30,
+      "ana_local_co2": [2.0, 2.0], "ana_hr": [62, 66], "ana_spo2": [98, 98],
+      "ana_immobile_h": 3.5 },
+    { "t0": 20, "t1": 26, "module2_co2": [2.4, 2.8], "module2_ventilation": 30,
+      "ana_local_co2": [2.0, 2.1], "ana_hr": [66, 68], "ana_spo2": [98, 97],
+      "ana_immobile_h": 3.5 },
+    { "t0": 26, "t1": 34, "module2_co2": [2.8, 3.1], "module2_ventilation": 30,
+      "ana_local_co2": [2.1, 3.5], "ana_hr": [68, 76], "ana_spo2": [97, 96],
+      "ana_immobile_h": 3.5 },
+    { "t0": 34, "t1": 40, "module2_co2": [3.1, 3.3], "module2_ventilation": 30,
+      "ana_local_co2": [3.5, 3.8], "ana_hr": [76, 82], "ana_spo2": [96, 95],
+      "ana_immobile_h": 3.5 },
+    { "t0": 40, "t1": 100, "module2_co2": [3.3, 3.3], "module2_ventilation": 30,
+      "ana_local_co2": [3.8, 3.8], "ana_hr": [82, 82], "ana_spo2": [95, 95],
+      "ana_immobile_h": 3.5 }
+  ],
+  "symptoms": [
+    { "t": 28, "crew": "ana", "symptom": "stuffy_nose" },
+    { "t": 34, "crew": "ana", "symptom": "headache" }
+  ]
+}

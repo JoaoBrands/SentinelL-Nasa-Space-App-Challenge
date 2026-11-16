@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "project": "Sentinel",
+  "policy": "Offline-first research prototype. Sentinel does not ingest NASA datasets or live NASA telemetry. It applies a NASA-published CO₂ reference to synthetic scenario readings; NASA publications provide context, not clinical validation.",
+  "data_flow": {
+    "title": "How NASA sources are used",
+    "steps": [
+      {
+        "label": "NASA reference",
+        "description": "NASA OCHMO-TB-004 summarizes NASA-STD-3001 Volume 2, requirement V2 6004: the habitable-volume CO₂ partial pressure is averaged over one hour and must be no greater than 3 mmHg.",
+        "source_ids": ["NASA-OCHMO-TB-004"]
+      },
+      {
+        "label": "Implemented rule",
+        "description": "Sentinel uses 3.0 mmHg as the comparison limit and evaluates a time-weighted rolling average after a complete 60-minute sample window.",
+        "source_ids": ["NASA-OCHMO-TB-004"]
+      },
+      {
+        "label": "Scenario input",
+        "description": "The CO₂ readings and crew measurements come from local synthetic scenario files. They are not NASA telemetry or values extracted from a NASA dataset.",
+        "source_ids": []
+      },
+      {
+        "label": "What the result means",
+        "description": "The alert demonstrates applying a published NASA reference to synthetic input; it is not a measurement of a real habitat or a compliance determination.",
+        "source_ids": ["NASA-OCHMO-TB-004"]
+      }
+    ]
+  },
+  "data_layers": [
+    {
+      "id": "nasa_reference",
+      "label": "NASA reference",
+      "description": "Published requirement or technical evidence from NASA; review the scope and limitations of each source."
+    },
+    {
+      "id": "prototype_inference",
+      "label": "Prototype inference",
+      "description": "Project rule motivated by published evidence, but not validated as a diagnostic or predictive method."
+    },
+    {
+      "id": "synthetic_data",
+      "label": "Synthetic data",
+      "description": "Simulated crew values and symptoms. They are not real astronaut telemetry or NASA study data."
+    }
+  ],
+  "scenario_data": {
+    "classification": "synthetic_data",
+    "description": "Ana's profile, symptoms, local CO₂, ventilation, heart rate, and timeline are generated for this demonstration. The local fan changes only Ana's synthetic local CO₂ and airflow with an illustrative 5-minute linear ramp down to 1.8 mmHg. The separate module ventilation action uses an illustrative 10-minute linear ramp down to 2.4 mmHg. These targets and timings do not come from NASA and were not validated; module alert resolution depends on the hourly rolling average.",
+    "personal_co2_threshold_mmhg": 2.1,
+    "threshold_note": "Illustrative project parameter, not an individual NASA threshold or clinical limit."
+  },
+  "sources": [
+    {
+      "id": "NASA-NTRS-20180000936",
+      "title": "Evidence Report: Risk of Spaceflight Associated Neuro-ocular Syndrome (SANS)",
+      "url": "https://ntrs.nasa.gov/citations/20180000936",
+      "document": "20180000936.pdf",
+      "type": "NASA technical report",
+      "pages": "61-62",
+      "supports": "Explains that reduced convection in microgravity can allow local CO₂ pockets near the nose and mouth. It cites a computational fluid dynamics analysis that estimated levels above 9 mmHg near the mouth and chin of a sleeping person within 10 minutes without adequate ventilation; targeted face fans are used in sleep areas.",
+      "limitations": "The report states that there are few real local exposure measurements and that individual susceptibility to CO₂ cannot be concluded. The source supports physical plausibility, not validation of the Sentinel inference."
+    },
+    {
+      "id": "NASA-NTRS-20160012725",
+      "title": "Relationship Between Carbon Dioxide Levels and Reported Congestion and Headaches on the International Space Station",
+      "url": "https://ntrs.nasa.gov/citations/20160012725",
+      "document": "20160012725.pdf",
+      "type": "NASA conference abstract",
+      "supports": "Reports an association between ISS CO₂ levels and reports of congestion and headache. For each 1 mmHg increase, the odds of reporting congestion doubled; the summary estimates that the 7-day average should remain below 1.5 mmHg to keep congestion risk below 1%.",
+      "limitations": "The doubled-odds result refers to congestion, not headache. The analysis uses ambient CO₂ measurements over 24-hour and 7-day periods; it does not establish a temporal sequence between congestion and headache or validate the instantaneous local threshold used in this prototype."
+    },
+    {
+      "id": "NASA-OCHMO-TB-004",
+      "title": "Carbon Dioxide (CO2)",
+      "url": "https://www.nasa.gov/ochmo-tb-004-carbon-dioxide-2/",
+      "type": "NASA OCHMO technical note",
+      "supports": "Summarizes NASA-STD-3001 Volume 2 Rev D requirement V2 6004: average partial pressure of CO₂ in one hour in the habitable volume at or below 3 mmHg. It also discusses a 7-day average below 2.5 mmHg to keep headache risk below 1%.",
+      "limitations": "Sentinel computes a time-weighted 60-minute average using synthetic readings. This is not habitat measurement or compliance determination. This note does not specify the personal threshold of 2.1 mmHg."
+    },
+    {
+      "id": "NASA-NTRS-20230016189",
+      "title": "Earth Independent Medical Operations (EIMO)",
+      "url": "https://ntrs.nasa.gov/citations/20230016189",
+      "document": "EIMO_OVERVIEW_IWS24.docx",
+      "type": "NASA presentation summary",
+      "supports": "Describes the need for progressively autonomous operational medical support and a clinical decision support system for contingencies in which Earth support is delayed or unavailable.",
+      "limitations": "This is conceptual and operational context, not a clinical guideline or validation of Sentinel algorithms."
+    }
+  ],
+  "rule_evidence": {
+    "module_co2_limit": {
+      "classification": "NASA reference; synthetic scenario measurement",
+      "note": "The alert uses a time-weighted rolling average over 60 simulated minutes, waits for a full window, and resets coverage after a missing, negative, non-finite, malformed reading or a sampling gap larger than 1.5 simulated minutes. The readings are synthetic; this is not habitat compliance measurement.",
+      "source_ids": ["NASA-OCHMO-TB-004"]
+    },
+    "co2_pocket_inference": {
+      "classification": "Physically plausible hypothesis supported by NASA source; prototype inference",
+      "note": "The report supports local pocket plausibility. Sentinel infers risk using synthetic local CO₂, immobility, and ventilation; it does not measure or clinically validate a pocket.",
+      "source_ids": ["NASA-NTRS-20180000936"]
+    },
+    "co2_warning_congestion": {
+      "classification": "Published association; prototype inference",
+      "note": "The study reports an association with ISS ambient CO₂; the doubled-odds result is for congestion and uses 24-hour/7-day exposure measures, not the instantaneous local value in this scenario.",
+      "source_ids": ["NASA-NTRS-20160012725", "NASA-OCHMO-TB-004"]
+    },
+    "co2_warning_headache": {
+      "classification": "Published association; prototype inference",
+      "note": "CO₂ has been associated with headache reports on the ISS, but this synthetic local reading and symptom do not establish cause or diagnosis.",
+      "source_ids": ["NASA-NTRS-20160012725", "NASA-OCHMO-TB-004"]
+    },
+    "spo2_critical": {
+      "classification": "Illustrative prototype threshold",
+      "note": "The threshold is configured for this prototype and is not supported by the NASA sources listed here.",
+      "source_ids": []
+    },
+    "hr_critical": {
+      "classification": "Illustrative prototype threshold",
+      "note": "The threshold is configured for this prototype and is not supported by the NASA sources listed here.",
+      "source_ids": []
+    }
+  }
+}

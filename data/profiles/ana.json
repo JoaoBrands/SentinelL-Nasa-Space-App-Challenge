@@ -1,0 +1,15 @@
+{
+  "id": "ana",
+  "name_display": "Ana",
+  "conditions": ["migraine"],
+  "personal_thresholds": {
+    "co2_mmHg": 2.1,
+    "co2_source": "illustrative_project_assumption"
+  },
+  "renal_risk": false,
+  "radiation_career_dose_mSv": 340,
+  "radiation_career_limit_mSv": 500,
+  "knee_injury": false,
+  "medications": [],
+  "notes": "History of migraine. Nasal congestion precedes headache."
+}

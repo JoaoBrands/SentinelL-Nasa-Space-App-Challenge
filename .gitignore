@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+*.log
+data/rag_cache.json
+data/samples/
+.DS_Store
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+20160012725.pdf
+20180000936.pdf
+EIMO_OVERVIEW_IWS24.docx

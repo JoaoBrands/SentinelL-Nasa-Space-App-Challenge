@@ -1,0 +1,12 @@
+{
+  "id": "bia",
+  "name_display": "Bia",
+  "conditions": ["knee_ligament_tear"],
+  "personal_thresholds": { "co2_mmHg": 3.0 },
+  "renal_risk": false,
+  "radiation_career_dose_mSv": 210,
+  "radiation_career_limit_mSv": 500,
+  "knee_injury": true,
+  "medications": [],
+  "notes": "Prior knee injury. Adapt ARED load."
+}

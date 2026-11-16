@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sentinel — Prototype</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header>
+    <div class="brand">SENTINEL <span class="version">v0.3</span></div>
+    <div class="link-state" id="link-state">CONNECTING</div>
+  </header>
+
+  <main class="split">
+    <section class="panel panel-space">
+      <div class="panel-title">ONBOARD — OFFLINE (EDGE)</div>
+      <div class="sim-time">Simulation: T+<span id="sim-time">0.0</span> min</div>
+      <div class="co2-window" id="co2-window" aria-live="polite">
+        <span class="co2-window-label">MODULE CO₂ · 1-HOUR ROLLING AVERAGE</span>
+        <strong id="co2-window-value">Waiting for telemetry</strong>
+        <span id="co2-window-detail">Requires 60 simulated minutes of coverage.</span>
+        <button class="btn btn-module-vent" id="btn-module-ventilation" hidden>START MODULE VENTILATION</button>
+        <div class="module-recovery" id="module-recovery" aria-live="polite" hidden>
+          <div class="module-recovery-heading">
+            <strong id="module-recovery-title">MODULE VENTILATION ACTIVE</strong>
+            <span>ILLUSTRATIVE MODEL</span>
+          </div>
+          <progress id="module-recovery-progress" max="100" value="0"></progress>
+          <span id="module-recovery-detail"></span>
+        </div>
+      </div>
+      <div class="fan-recovery" id="fan-recovery" aria-live="polite" hidden>
+        <div class="fan-recovery-heading">
+          <strong>LOCAL FAN ACTIVE</strong>
+          <span>ILLUSTRATIVE MODEL</span>
+        </div>
+        <progress id="fan-recovery-progress" max="100" value="0"></progress>
+        <span id="fan-recovery-detail"></span>
+      </div>
+
+      <div class="chart-container">
+        <canvas id="vitalsChart" role="img" aria-label="Timeline chart comparing synthetic local and module carbon dioxide readings with synthetic heart rate"></canvas>
+      </div>
+
+      <div class="ai-panel" id="ai-panel" style="display: none;">
+        <div class="ai-header">
+          <span class="ai-icon">🤖</span>
+          <span class="ai-title">ONBOARD MEDICAL AI</span>
+          <span class="ai-badge" id="ai-badge">PRECOMPUTED</span>
+        </div>
+        <div class="ai-content" id="ai-content"></div>
+      </div>
+
+      <div class="body-map-container">
+        <div class="section-title">BODY MAP — MEASUREMENT CONTEXT</div>
+        <div class="body-map-layout">
+          <svg viewBox="0 0 200 400" class="body-svg">
+            <circle cx="100" cy="50" r="30" class="body-part" data-part="head" />
+            <rect x="90" y="80" width="20" height="20" class="body-part" data-part="neck" />
+            <rect x="60" y="100" width="80" height="70" rx="10" class="body-part" data-part="chest" />
+            <rect x="65" y="170" width="70" height="60" rx="10" class="body-part" data-part="gut" />
+            <rect x="30" y="105" width="25" height="100" rx="10" class="body-part" data-part="arm_l" />
+            <rect x="145" y="105" width="25" height="100" rx="10" class="body-part" data-part="arm_r" />
+            <rect x="65" y="235" width="30" height="100" rx="10" class="body-part" data-part="leg_l" />
+            <rect x="105" y="235" width="30" height="100" rx="10" class="body-part" data-part="leg_r" />
+          </svg>
+
+          <div class="body-info-panel" id="body-info-panel">
+            <div class="body-info-title" id="body-info-title">Select a body region</div>
+            <div class="body-info-content" id="body-info-content">
+              SIMULATED items come from the scenario. Other items show measurement context only; they are not collected by this prototype.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="crew-grid" id="crew-grid"></div>
+
+      <div class="grid-2-col">
+        <div>
+          <div class="section-title">ILLUSTRATIVE CASCADE</div>
+          <p class="cascade-note">Conceptual sequence only—not a clinical prediction. Milestones are fixed to scenario start and are not based on validated progression data.</p>
+          <div class="cascade-container" id="cascade-container">
+            <div class="no-data">No active cascade</div>
+          </div>
+        </div>
+        <div>
+          <div class="section-title">CREW PROTOCOL</div>
+          <div class="protocol-container" id="protocol-container">
+            <div class="no-data">No active protocol</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="domino-panel" id="domino-panel" style="display: none;">
+        <div class="domino-header">
+          <span>🔗 ILLUSTRATIVE CREW WORKLOAD</span>
+        </div>
+        <div class="domino-content" id="domino-content"></div>
+        <button class="btn btn-domino" id="btn-domino">ACKNOWLEDGE ILLUSTRATION</button>
+      </div>
+
+      <div class="section-title">ALERTS</div>
+      <div class="alerts" id="alerts"></div>
+    </section>
+
+    <section class="panel panel-earth">
+      <div class="panel-title">MISSION CONTROL — EARTH</div>
+      <details class="provenance-panel" id="provenance-panel">
+        <summary>DATA AND EVIDENCE</summary>
+        <div class="provenance-content" id="provenance-content"></div>
+      </details>
+      <div class="telemetry-receipt" id="telemetry-receipt" hidden></div>
+      <div class="event-log" id="event-log"></div>
+
+      <div class="blackout-overlay" id="blackout-overlay">
+        <div class="blackout-text">
+          <h1>NO SIGNAL</h1>
+          <p id="blackout-message">Onboard monitoring continues; events are stored locally.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="controls">
+    <button data-scenario="none" class="btn btn-normal">NORMAL</button>
+    <button data-scenario="co2_failure_ana" class="btn btn-warning">CO2 FAILURE</button>
+    <button class="btn btn-danger" id="btn-cut">CUT COMMS</button>
+    <button class="btn" id="btn-restore" disabled>RESTORE</button>
+    <button class="btn btn-action" id="btn-action" disabled>ACTIVATE BED FAN</button>
+  </footer>
+
+  <div class="disclaimer">
+    Prototype decision-support tool. Not a medical device. Simulated data; illustrative limits.
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

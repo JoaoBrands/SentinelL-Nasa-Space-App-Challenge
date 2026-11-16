@@ -1,0 +1,13 @@
+{
+  "id": "carlos",
+  "name_display": "Carlos",
+  "conditions": ["renal_stone_history"],
+  "personal_thresholds": { "co2_mmHg": 3.0 },
+  "renal_risk": true,
+  "hydration_target_multiplier": 1.3,
+  "radiation_career_dose_mSv": 180,
+  "radiation_career_limit_mSv": 500,
+  "knee_injury": false,
+  "medications": [],
+  "notes": "Renal stone history. Higher hydration target."
+}

@@ -1,0 +1,12 @@
+{
+  "id": "rui",
+  "name_display": "Rui",
+  "conditions": ["hypertension_controlled"],
+  "personal_thresholds": { "co2_mmHg": 3.0 },
+  "renal_risk": false,
+  "radiation_career_dose_mSv": 290,
+  "radiation_career_limit_mSv": 500,
+  "knee_injury": false,
+  "medications": ["amlodipine"],
+  "notes": "On amlodipine. Check interactions with kit."
+}

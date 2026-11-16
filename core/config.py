@@ -22,4 +22,4 @@ MODULE_VENTILATION_RESPONSE_MINUTES = 10.0
 # --- Simulator ---
 DEFAULT_SPEED = 1.0               # 1 real second = 1 sim minute
 TICK_INTERVAL_SEC = 1.0
-OLLAMA_REQUEST_TIMEOUT_SECONDS = 60.0  # Local 7B inference can take tens of seconds.
+OLLAMA_REQUEST_TIMEOUT_SECONDS = 3.0  # Keep the simulation responsive; slow calls use cached text.

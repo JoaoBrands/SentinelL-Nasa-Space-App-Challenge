@@ -19,7 +19,7 @@ The editable seven-slide English demo is [`Sentinel_Space_Apps_2026_Pitch.pptx`]
 - NASA NTRS 20160012725 reports associations between ambient CO₂ and symptom reports; do not present association as causation.
 - NASA NTRS 20230016189 provides EIMO context; it does not validate Sentinel.
 - Do not describe the prototype as a medical device, NASA telemetry integration, clinical validation, or a real-habitat compliance system.
-- Optional Ollama explanations may take several seconds and have a 60-second request timeout; deterministic rules assign status and risk, and the precomputed cache remains the fallback.
+- Optional Ollama explanations use a three-second timeout to keep the simulation responsive; slow or unavailable calls use the precomputed cache. The slide screenshot captures a successful live response, while deterministic rules assign status and risk.
 
 ## SI disclosure
 

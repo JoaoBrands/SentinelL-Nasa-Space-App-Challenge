@@ -14,7 +14,7 @@ An offline-first decision-support prototype for long-duration spaceflight, inspi
 - A separate module ventilation action with an illustrative ten-minute ramp. The rolling average continues to be calculated, and the environmental alert clears only when the average falls to or below the reference limit.
 - Blackout simulation: onboard rules continue running, events are summarized locally, and a compressed, authenticated AES-256-GCM packet is sent after communications are restored.
 - Optional local explanations through Ollama. Risk classification comes from the deterministic rules engine; if Ollama is unavailable, the application uses precomputed explanations from its cache.
-- Ollama requests use a three-second HTTP timeout; a timeout falls back to the precomputed explanation cache.
+- Ollama requests allow up to 60 seconds for local inference; the first response may take tens of seconds. If Ollama is unavailable or times out, the application uses the precomputed explanation cache.
 
 ## Not connected to runtime monitoring
 
@@ -95,4 +95,4 @@ The data flow and limitations of the demonstration are described in [`docs/telem
 
 ## Super Intelligence use
 
-AI assistance was used for code implementation and review, tuning synthetic scenario values, and drafting the project slides. The slide deck uses editable vector shapes rather than AI-generated images; no AI-generated audio or video is included. Scenario values remain synthetic and are not NASA telemetry.
+AI assistance was used for code implementation and review, tuning synthetic scenario values, generating optional live Ollama explanations, and drafting the project slides. The slide deck uses a screenshot of the real prototype, not an AI-generated image; no AI-generated images, audio, or video are included. Scenario values remain synthetic and are not NASA telemetry.
